@@ -1,0 +1,20 @@
+language: java
+sudo: required
+jdk: oraclejdk8
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
+# git strips the wrapper jar file so we have to force its download during the build
+install:
+- mvn -N io.takari:maven:wrapper
+- ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $github_token
+  keep-history: true
+  on:
+    branch: master
